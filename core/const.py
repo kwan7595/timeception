@@ -32,11 +32,10 @@ from __future__ import unicode_literals
 import os
 import platform
 import numpy as np
-
+import os, sys
 DL_FRAMEWORKS = np.array(['caffe', 'tensorflow', 'pytorch', 'keras', 'caffe2'])
 DL_FRAMEWORK = None
 GPU_CORE_ID = 0
-
 CNN_FEATURE_SIZES = np.array([2048, 2048, 1000, 1024, 1000, 2048, 2048])
 CNN_FEATURE_TYPES = np.array(['fc6', 'fc7', 'fc1000', 'fc1024', 'fc365', 'prob', 'pool5', 'fc8a', 'res3b7', 'res4b35', 'res5c'])
 CNN_MODEL_TYPES = np.array(['resnet152', 'googlenet1k', 'vgg16', 'places365-resnet152', 'places365-vgg', 'googlenet13k'])
@@ -47,6 +46,6 @@ MODEL_CLASSIFICATION_TYPES = np.array(['ml', 'sl'])
 MODEL_MULTISCALE_TYPES = np.array(['dl', 'ks'])
 SOLVER_NAMES = np.array(['adam', 'sgd'])
 DATASET_NAMES = np.array(['charades', 'kinetics400', 'breakfast_actions', 'you_cook_2', 'multi_thumos'])
-DATA_ROOT_PATH = './data'
+DATA_ROOT_PATH= './data'
 PROJECT_ROOT_PATH = '../'
 MACHINE_NAME = platform.node()

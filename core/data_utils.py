@@ -35,8 +35,9 @@ import numpy as np
 import pickle as pkl
 from datetime import datetime
 from multiprocessing.dummy import Pool
-
 import keras.utils
+import keras
+from keras.utils import np_utils
 import torch.utils.data
 import torchvision
 
@@ -153,7 +154,7 @@ class AsyncLoaderVideoFeatures():
 
 # region Data Generators (Keras)
 
-class DataGeneratorCharades(keras.utils.Sequence):
+class DataGeneratorCharades(keras.utils.all_utils.Sequence):
     'Generates data for Keras'
 
     def __init__(self, batch_size, n_classes, feature_dim, feature_name, is_training, is_shuffle=True):

@@ -76,14 +76,12 @@ import imageio
 from natsort import natsort
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
-import torchsummary
+##import torchsummary
 import logging
 
 from core import const as c
 from core import utils, image_utils, config_utils
-
 logger = logging.getLogger(__name__)
-
 # region Constants
 
 N_CLASSES = 157
@@ -95,7 +93,7 @@ N_FRAMES_PER_SECOND = 24
 # region Prepare Annotation
 
 def _01_prepare_annotation_class_names():
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_text_path = '%s/Charades/annotation/Charades_v1_classes.txt' % (root_path)
     annot_pkl_path = '%s/Charades/annotation/class_names.pkl' % (root_path)
 
@@ -112,7 +110,7 @@ def _01_prepare_annotation_class_names():
     _ = 10
 
 def _02_prepare_annotation_frame_dict(is_training=True):
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
     annotation_pkl_tr_path = '%s/Charades/annotation/frames_dict_tr.pkl' % (root_path)
@@ -169,7 +167,7 @@ def _03_prepare_annotation_frame_list():
     n_frames_per_sample = 20
     n_classes = N_CLASSES
 
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annotation_dict_tr_path = '%s/Charades/annotation/frames_dict_tr.pkl' % (root_path)
     annotation_dict_te_path = '%s/Charades/annotation/frames_dict_te.pkl' % (root_path)
     annotation_list_path = '%s/Charades/annotation/frames_list_%d_frames.pkl' % (root_path, n_frames_per_sample)
@@ -228,7 +226,7 @@ def _03_prepare_annotation_frame_list():
     utils.pkl_dump(data, annotation_list_path, is_highest=True)
 
 def _06_prepare_video_annotation_multi_label():
-    root_path = '.'
+    root_path = c.DATA_ROOT_PATH
     video_annotation_path = '%s/Charades/annotation/video_annotation.pkl' % (root_path)
     video_annotation_multi_label_path = '%s/Charades/annotation/video_annotation_multi_label.pkl' % (root_path)
 
@@ -282,7 +280,7 @@ def _08_prepare_annotation_frames_per_video_dict_multi_label():
     min_frames_per_video = 100
     max_frames_per_video = 100
 
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
     annotation_path = '%s/Charades/annotation/frames_dict_multi_label.pkl' % (root_path)
@@ -298,7 +296,7 @@ def _12_prepare_annotation_frames_per_video_dict_multi_label_all_frames():
     """
 
     n_frames_per_video = None
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
     annotation_path = '%s/Charades/annotation/frames_dict_multi_label_all_frames.pkl' % (root_path)
@@ -315,7 +313,7 @@ def _13_prepare_annotation_frames_per_video_dict_untrimmed_multi_label_for_i3d()
     n_frames_per_video = 1024
     n_frames_per_video = 128
     n_frames_per_video = 256
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
     annotation_path = '%s/Charades/annotation/frames_dict_untrimmed_multi_label_i3d_%d_frames.pkl' % (root_path, n_frames_per_video)
@@ -333,7 +331,7 @@ def _14_prepare_annotation_frames_per_video_dict_untrimmed_multi_label_for_resne
 
     # if required frames per video are 128, there are 51/6 out of 7986/1864 videos in training/testing splits that don't satisfy this
     n_frames_per_video = 32
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
     annotation_path = '%s/Charades/annotation/frames_dict_untrimmed_multi_label_resnet_ordered_%d_frames.pkl' % (root_path, n_frames_per_video)
@@ -344,7 +342,7 @@ def _14_prepare_annotation_frames_per_video_dict_untrimmed_multi_label_for_resne
     utils.pkl_dump((video_frames_dict_tr, video_frames_dict_te), annotation_path, is_highest=True)
 
 def __get_frame_names_from_csv_file(annot_text_path, min_frames_per_video, max_frames_per_video, sampling=True):
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     counts_before = []
     counts_after = []
     count = 0
@@ -366,7 +364,7 @@ def __get_frame_names_from_csv_file(annot_text_path, min_frames_per_video, max_f
             frames_relative_root_path = 'Charades/frames/Charades_v1_rgb/%s' % (video_id)
             frames_root_path = '%s/%s' % (root_path, frames_relative_root_path)
 
-            frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+            frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
             n_frames = len(frame_names)
             counts_before.append(n_frames)
 
@@ -402,7 +400,7 @@ def __get_frame_names_untrimmed_from_csv_file_for_ordered(annot_text_path, n_fra
     count = 0
     video_frames_dict = dict()
 
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     n_lines = len(open(annot_text_path).readlines())
 
     with open(annot_text_path) as f:
@@ -420,7 +418,7 @@ def __get_frame_names_untrimmed_from_csv_file_for_ordered(annot_text_path, n_fra
 
             video_id = row['id']
             frames_root_path = '%s/Charades/frames/Charades_v1_rgb/%s' % (root_path, video_id)
-            video_frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+            video_frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
 
             if is_resnet:
                 video_frame_names = __sample_frames_ordered_for_resnet(video_frame_names, n_frames_per_video)
@@ -445,7 +443,7 @@ def __get_frame_names_untrimmed_from_csv_file_for_ordered(annot_text_path, n_fra
 def __get_frame_names_untrimmed_from_csv_file_for_i3d(annot_text_path, n_frames_per_video):
     count = 0
     video_frames_dict = dict()
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
 
     n_lines = len(open(annot_text_path).readlines())
 
@@ -466,7 +464,7 @@ def __get_frame_names_untrimmed_from_csv_file_for_i3d(annot_text_path, n_frames_
             # get all frames of the video
             frames_relative_root_path = 'Charades/frames/Charades_v1_rgb/%s' % (video_id)
             frames_root_path = '%s/%s' % (root_path, frames_relative_root_path)
-            video_frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+            video_frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
 
             # sample from these frames
             video_frame_names = __sample_frames_for_i3d(video_frame_names, n_frames_per_video)
@@ -558,7 +556,7 @@ def __sample_frames_for_i3d(frames, n_required):
     return sampled_frames
 
 def __count_time_in_each_video(is_training=True):
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annot_tr_text_path = '%s/Charades/annotation/Charades_v1_train.csv' % (root_path)
     annot_te_text_path = '%s/Charades/annotation/Charades_v1_test.csv' % (root_path)
 
@@ -586,7 +584,7 @@ def __count_time_in_each_video(is_training=True):
 
             frames_relative_root_path = 'Charades/frames/Charades_v1_rgb/%s' % (video_id)
             frames_root_path = '%s/%s' % (root_path, frames_relative_root_path)
-            frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+            frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
 
             frames_per_video = 0
             time_per_video = 0
@@ -634,7 +632,7 @@ def __count_time_in_each_video(is_training=True):
     print(count)
 
 def __count_how_many_videos_per_class():
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annotation_path = '%s/Charades/annotation/video_annotation.pkl' % (root_path)
     (video_id_tr, y_tr, video_id_te, y_te) = utils.pkl_load(annotation_path)
     n_classes = N_CLASSES
@@ -660,7 +658,7 @@ def __count_how_many_videos_per_class():
 
 def __test_video_names_in_annotation_list():
     n_frames_per_sample = 20
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     annotation_path = '%s/Charades/annotation/frames_list_%d_frames.pkl' % (root_path, n_frames_per_sample)
 
     (x_tr, y_tr, x_te, y_te) = utils.pkl_load(annotation_path)
@@ -678,10 +676,10 @@ def __get_frames_relative_pathes_in_given_duration(video_id, start_time_in_sec, 
     """
     For a given video_id with start and stop time in seconds, get the relative pathes of the related frames.
     """
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     frames_relative_root_path = 'Charades/frames/Charades_v1_rgb/%s' % (video_id)
     frames_root_path = '%s/%s' % (root_path, frames_relative_root_path)
-    frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+    frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
 
     idx_start = __convert_seconds_to_frame_idx(start_time_in_sec)
     idx_stop = __convert_seconds_to_frame_idx(stop_time_in_sec)
@@ -694,10 +692,10 @@ def __get_frames_names_in_given_duration(video_id, start_time_in_sec, stop_time_
     """
     For a given video_id with start and stop time in seconds, get the relative pathes of the related frames.
     """
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     frames_relative_root_path = 'Charades/frames/Charades_v1_rgb/%s' % (video_id)
     frames_root_path = '%s/%s' % (root_path, frames_relative_root_path)
-    frame_names = utils.file_names(frames_root_path, nat_sorted=True)
+    frame_names = utils.file_names(frames_root_path, is_nat_sort=True)
 
     idx_start = __convert_seconds_to_frame_idx(start_time_in_sec)
     idx_stop = __convert_seconds_to_frame_idx(stop_time_in_sec)
@@ -716,125 +714,126 @@ def __convert_seconds_to_frame_idx(time_in_sec):
 
 # region Extract Features
 
-def extract_features_i3d_charades():
-    """
-    Extract features from i3d-model
-    """
+# def extract_features_i3d_charades():
+#     """
+#     Extract features from i3d-model
+#     """
+#
+#     n_frames_in = 1024
+#     n_frames_out = 128
+#     n_splits_per_video = 2
+#
+#     root_path = './data'
+#     frames_annot_path = '%s/charades/annotation/frames_dict_untrimmed_multi_label_i3d_%d_frames.pkl' % (root_path, n_frames_in)
+#     model_path = '%s/charades/baseline_models/i3d/rgb_charades.pt' % (root_path)
+#     frames_root_path = '%s/charades/frames/Charades_v1_rgb' % (root_path)
+#     features_root_path = '/local-ssd/nhussein/Charades/features_i3d_charades_rgb_mixed_5c_untrimmed_%d_frames' % (n_frames_out)
+#
+#     (video_frames_dict_tr, video_frames_dict_te) = utils.pkl_load(frames_annot_path)
+#     video_frames_dict = dict()
+#     video_frames_dict.update(video_frames_dict_tr)
+#     video_frames_dict.update(video_frames_dict_te)
+#     video_names = video_frames_dict.keys()
+#     n_videos = len(video_names)
+#     del video_frames_dict_tr
+#     del video_frames_dict_te
+#
+#     n_threads = 8
+#     n_frames_per_segment = 8
+#     assert n_frames_per_segment * n_frames_out == n_frames_in
+#
+#     if not is_local_machine and not os.path.exists(features_root_path):
+#         print('Sorry, path does not exist: %s' % (features_root_path))
+#         return
+#
+#     t1 = time.time()
+#     print('extracting training features')
+#     print('start time: %s' % utils.timestamp())
+#
+#     # reader for getting video frames
+#     video_reader_tr = image_utils.AsyncVideoReaderCharadesForI3DTorchModel(n_threads=n_threads)
+#
+#     # aync reader, and get load images for the first video, we will read the first group of videos
+#     video_group_frames = __get_video_frame_pathes(video_names[0], frames_root_path, video_frames_dict)
+#     video_reader_tr.load_video_frames_in_batch(video_group_frames)
+#
+#     # load the model
+#     model = i3d_factory.load_model_i3d_charades_rgb_for_testing(model_path)
+#     print(torchsummary.summary(model, input_size=(3, 8, 224, 224)))
+#
+#     # import torchsummary
+#     # print torchsummary.summary(model, (8, 3, 224, 224))
+#     return
+#
+#     # loop on list of videos
+#     for idx_video in range(n_videos):
+#
+#         video_num = idx_video + 1
+#         video_name = video_names[idx_video]
+#
+#         if begin_num is not None and end_num is not None:
+#             if video_num <= begin_num or video_num > end_num:
+#                 continue
+#
+#         # wait until the image_batch is loaded
+#         t1 = time.time()
+#         while video_reader_tr.is_busy():
+#             threading._sleep(0.1)
+#         t2 = time.time()
+#         duration_waited = t2 - t1
+#
+#         print('... video %04d, %04d, waited: %.02f' % (video_num, n_videos, duration_waited))
+#
+#         # get the frames
+#         frames = video_reader_tr.get_images()  # (G*T*N, 224, 224, 3)
+#
+#         # pre-load for the next video group, notice that we take into account the number of instances
+#         if video_num < n_videos:
+#             next_video_frames = __get_video_frame_pathes(video_names[idx_video + 1], frames_root_path, video_frames_dict)
+#             video_reader_tr.load_video_frames_in_batch(next_video_frames)
+#
+#         if len(frames) != n_frames_in:
+#             raise ('... ... wrong n frames: %s' % (video_name))
+#
+#         # reshape to make one dimension carries the frames / segment, while the other dimesion represents the batch size
+#         frames = np.reshape(frames, (n_frames_out, n_frames_per_segment, 224, 224, 3))  # (T, 8, 224, 224, 3)
+#
+#         # transpose to have the channel_first (G*T, 8, 224, 224, 3) => (T, 3, 8, 224, 224)
+#         frames = np.transpose(frames, (0, 4, 1, 2, 3))
+#
+#         # prepare input variable
+#         with torch.no_grad():
+#             # extract features
+#             input_var = torch.from_numpy(frames).cuda()
+#             output_var = model(input_var)
+#             output_var = output_var.cpu()
+#             features = output_var.data.numpy()  # (T, 1024, 1, 7, 7)
+#             # don't forget to clean up variables
+#             del input_var
+#             del output_var
+#
+#         # transpose to have the channel_last
+#         features = np.transpose(features, (0, 2, 3, 4, 1))  # (T, 1, 7, 7, 1024)
+#
+#         # reshape to have the features for each video in a separate dimension
+#         features = np.squeeze(features, axis=1)  # (T, 7, 7, 1024)
+#
+#         # path to save the features
+#         video_features_path = '%s/%s.pkl' % (features_root_path, video_name)
+#         # if os.path.exists(video_features_path):
+#         #     print ('... features for video already exist: %s.pkl' % (video_name))
+#         #     continue
+#
+#         # save features
+#         utils.pkl_dump(features, video_features_path, is_highest=True)
+#
+#     t2 = time.time()
+#     print('... finish extracting features in %d seconds' % (t2 - t1))#
 
-    n_frames_in = 1024
-    n_frames_out = 128
-    n_splits_per_video = 2
-
-    root_path = './data'
-    frames_annot_path = '%s/charades/annotation/frames_dict_untrimmed_multi_label_i3d_%d_frames.pkl' % (root_path, n_frames_in)
-    model_path = '%s/charades/baseline_models/i3d/rgb_charades.pt' % (root_path)
-    frames_root_path = '%s/charades/frames/Charades_v1_rgb' % (root_path)
-    features_root_path = '/local-ssd/nhussein/Charades/features_i3d_charades_rgb_mixed_5c_untrimmed_%d_frames' % (n_frames_out)
-
-    (video_frames_dict_tr, video_frames_dict_te) = utils.pkl_load(frames_annot_path)
-    video_frames_dict = dict()
-    video_frames_dict.update(video_frames_dict_tr)
-    video_frames_dict.update(video_frames_dict_te)
-    video_names = video_frames_dict.keys()
-    n_videos = len(video_names)
-    del video_frames_dict_tr
-    del video_frames_dict_te
-
-    n_threads = 8
-    n_frames_per_segment = 8
-    assert n_frames_per_segment * n_frames_out == n_frames_in
-
-    if not is_local_machine and not os.path.exists(features_root_path):
-        print('Sorry, path does not exist: %s' % (features_root_path))
-        return
-
-    t1 = time.time()
-    print('extracting training features')
-    print('start time: %s' % utils.timestamp())
-
-    # reader for getting video frames
-    video_reader_tr = image_utils.AsyncVideoReaderCharadesForI3DTorchModel(n_threads=n_threads)
-
-    # aync reader, and get load images for the first video, we will read the first group of videos
-    video_group_frames = __get_video_frame_pathes(video_names[0], frames_root_path, video_frames_dict)
-    video_reader_tr.load_video_frames_in_batch(video_group_frames)
-
-    # load the model
-    model = i3d_factory.load_model_i3d_charades_rgb_for_testing(model_path)
-    print(torchsummary.summary(model, input_size=(3, 8, 224, 224)))
-
-    # import torchsummary
-    # print torchsummary.summary(model, (8, 3, 224, 224))
-    return
-
-    # loop on list of videos
-    for idx_video in range(n_videos):
-
-        video_num = idx_video + 1
-        video_name = video_names[idx_video]
-
-        if begin_num is not None and end_num is not None:
-            if video_num <= begin_num or video_num > end_num:
-                continue
-
-        # wait until the image_batch is loaded
-        t1 = time.time()
-        while video_reader_tr.is_busy():
-            threading._sleep(0.1)
-        t2 = time.time()
-        duration_waited = t2 - t1
-
-        print('... video %04d, %04d, waited: %.02f' % (video_num, n_videos, duration_waited))
-
-        # get the frames
-        frames = video_reader_tr.get_images()  # (G*T*N, 224, 224, 3)
-
-        # pre-load for the next video group, notice that we take into account the number of instances
-        if video_num < n_videos:
-            next_video_frames = __get_video_frame_pathes(video_names[idx_video + 1], frames_root_path, video_frames_dict)
-            video_reader_tr.load_video_frames_in_batch(next_video_frames)
-
-        if len(frames) != n_frames_in:
-            raise ('... ... wrong n frames: %s' % (video_name))
-
-        # reshape to make one dimension carries the frames / segment, while the other dimesion represents the batch size
-        frames = np.reshape(frames, (n_frames_out, n_frames_per_segment, 224, 224, 3))  # (T, 8, 224, 224, 3)
-
-        # transpose to have the channel_first (G*T, 8, 224, 224, 3) => (T, 3, 8, 224, 224)
-        frames = np.transpose(frames, (0, 4, 1, 2, 3))
-
-        # prepare input variable
-        with torch.no_grad():
-            # extract features
-            input_var = torch.from_numpy(frames).cuda()
-            output_var = model(input_var)
-            output_var = output_var.cpu()
-            features = output_var.data.numpy()  # (T, 1024, 1, 7, 7)
-            # don't forget to clean up variables
-            del input_var
-            del output_var
-
-        # transpose to have the channel_last
-        features = np.transpose(features, (0, 2, 3, 4, 1))  # (T, 1, 7, 7, 1024)
-
-        # reshape to have the features for each video in a separate dimension
-        features = np.squeeze(features, axis=1)  # (T, 7, 7, 1024)
-
-        # path to save the features
-        video_features_path = '%s/%s.pkl' % (features_root_path, video_name)
-        # if os.path.exists(video_features_path):
-        #     print ('... features for video already exist: %s.pkl' % (video_name))
-        #     continue
-
-        # save features
-        utils.pkl_dump(features, video_features_path, is_highest=True)
-
-    t2 = time.time()
-    print('... finish extracting features in %d seconds' % (t2 - t1))
 
 def __relative_to_absolute_pathes(relative_pathes):
     # change relative to absolute pathes
-    root_path = c.data_root_path
+    root_path = c.DATA_ROOT_PATH
     absolute_pathes = np.array(['%s/%s' % (root_path, x) for x in relative_pathes])
     return absolute_pathes
 

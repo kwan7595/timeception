@@ -51,11 +51,11 @@ from multiprocessing.dummy import Pool
 from core import const
 
 logger = logging.getLogger(__name__)
-
+os.chdir('../')
 # region Load and Dump
 
 def pkl_load(path):
-    with open(path, 'r') as f:
+    with open(path, 'rb') as f:
         data = pkl.load(f)
     return data
 
@@ -111,7 +111,7 @@ def byte_dump(data, path):
         f.write(data)
 
 def pkl_dump(data, path, is_highest=True):
-    with open(path, 'w') as f:
+    with open(path, 'wb') as f:
         if not is_highest:
             pkl.dump(data, f)
         else:
@@ -159,10 +159,10 @@ def mat_load(path, m_dict=None):
 
 def file_names(path, is_nat_sort=False):
     if not os.path.exists(path):
-        exp_msg = 'Sorry, folder path does not exist: %s' % (path)
+        exp_msg = 'Sorry, folder path does not exist: %s.' % (path)
         raise Exception(exp_msg)
 
-    names = os.walk(path).next()[2]
+    names = os.walk(path).__next__()[2]
 
     if is_nat_sort:
         names = natsort.natsorted(names)
@@ -174,7 +174,7 @@ def file_pathes(path, is_nat_sort=False):
         exp_msg = 'Sorry, folder path does not exist: %s' % (path)
         raise Exception(exp_msg)
 
-    names = os.walk(path).next()[2]
+    names = os.walk(path).__next__()[2]
 
     if is_nat_sort:
         names = natsort.natsorted(names)
@@ -187,7 +187,7 @@ def folder_names(path, is_nat_sort=False):
         exp_msg = 'Sorry, folder path does not exist: %s' % (path)
         raise Exception(exp_msg)
 
-    names = os.walk(path).next()[1]
+    names = os.walk(path).__next__()[1]
 
     if is_nat_sort:
         names = natsort.natsorted(names)
@@ -199,7 +199,7 @@ def folder_pathes(path, is_nat_sort=False):
         exp_msg = 'Sorry, folder path does not exist: %s' % (path)
         raise Exception(exp_msg)
 
-    names = os.walk(path).next()[1]
+    names = os.walk(path).__next__()[1]
 
     if is_nat_sort:
         names = natsort.natsorted(names)
