@@ -42,7 +42,8 @@ from optparse import OptionParser
 import tensorflow as tf
 import keras.backend as K
 from keras.layers import Dense, LeakyReLU, Dropout, Input, Activation, BatchNormalization
-from keras.optimizers import SGD, Adam
+from keras.optimizers import sgd_experimental,adam_experimental
+
 from keras.models import Model
 
 from nets import timeception
@@ -103,7 +104,7 @@ def __define_data_generator(is_training):
 
     # get some configs for the training
     n_classes = config.cfg.MODEL.N_CLASSES
-    dataset_name = config.cfg.DATASET_NAME
+    dataset_name =config.cfg.DATASET_NAME
     backbone_model_name = config.cfg.MODEL.BACKBONE_CNN
     backbone_feature_name = config.cfg.MODEL.BACKBONE_FEATURE
     n_timesteps = config.cfg.MODEL.N_TC_TIMESTEPS
@@ -154,7 +155,7 @@ def __define_timeception_model():
         metric_function = keras_utils.METRICS[0]
 
     # define the optimizer
-    optimizer = SGD(lr=0.01) if solver_name == 'sgd' else Adam(lr=solver_lr, epsilon=adam_epsilon)
+    optimizer = sgd_experimental(lr=0.01) if solver_name == 'sgd' else adam_experimental(lr=solver_lr, epsilon=adam_epsilon)
 
     # input layer
     input_shape = (n_tc_timesteps, channel_h, channel_w, n_channels_in)  # (T, H, W, C)
@@ -206,7 +207,7 @@ def __main():
         config_file = default_config_file
 
     # path of config file
-    config_path = './configs/%s' % (config_file)
+    config_path = '../configs/%s' % (config_file)
 
     # check if file exist
     if not os.path.exists(config_path):

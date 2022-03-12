@@ -206,7 +206,7 @@ class DataGeneratorCharades(keras.utils.all_utils.Sequence):
         y = self.y[idx_start:idx_stop]
         feats_path = self.feats_path[idx_start:idx_stop]
 
-        n_items = len(feats_path)
+        n_items = len(feats_path) #use functions declared in charades to sample frames
         x_shape = tuple([n_items] + list(self.feature_dim))
         x = np.zeros(x_shape, dtype=np.float32)
 
